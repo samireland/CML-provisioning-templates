@@ -1,0 +1,35 @@
+#cloud-config
+#https://cloud-init.io/
+#
+hostname: <setHostname>
+manage_etc_hosts: true
+system_info:
+  default_user:
+    name: netadmin
+password: <password>
+chpasswd: { expire: False }
+ssh_pwauth: True
+ssh_authorized_keys:
+  - your-ssh-pubkey-line-goes-here
+write_files:
+- path: /etc/netplan/network.yaml
+  permissions: '0400'
+  content: |
+    network:
+        version: 2
+        ethernets:
+            ens2:
+                dhcp4: false
+                addresses:
+                  - 192.168.0.X/24
+                routes:
+                  - to: default
+                    via: 192.168.0.1
+                nameservers:
+                  addresses:
+                    - 9.9.9.9
+                    - 1.1.1.1
+runcmd:
+- netplan generate
+- netplan apply
+- apt update ; apt full-upgrade -y
