@@ -1,0 +1,24 @@
+!
+hostname <theHostname>
+!
+ip domain name automation.lab
+!
+username netadmin privilege 15 password <password>
+!
+interface GigabitEthernet8
+ vrf forwarding management
+ ip address 192.168.0.x 255.255.255.0
+!
+!
+ip route vrf management 0.0.0.0 0.0.0.0 192.168.0.1
+!
+!
+line con 0
+ exec-timeout 0 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ length 0
+ transport input ssh
+!
