@@ -11,7 +11,7 @@ no aaa new-model
 !
 ip domain name automation.lab
 !
-username netadmin privilege 15 password 0 samlab123
+username sam privilege 15 password 0 cisco
 !
 ip ssh version 2
 crypto key generate rsa modulus 2048

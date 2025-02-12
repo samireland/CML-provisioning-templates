@@ -7,8 +7,8 @@
 hostname IPSEC-HOST1
 
 # set credentials
-USERNAME=admin
-PASSWORD=samlab123
+USERNAME=sam
+PASSWORD=cisco
 
 # configure networking
 ip addr add 172.16.20.5/29 dev eth0
