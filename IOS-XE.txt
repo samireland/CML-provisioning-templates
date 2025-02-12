@@ -23,10 +23,9 @@ line vty 0 4
  transport input ssh
 !
 !
-username admin privilege 15 password 0 sam
+username sam privilege 15 password 0 cisco
 !
 !
 ip ssh version 2
-crypto key generate rsa
- 2048
+crypto key generate rsa modulus 2048
 !
