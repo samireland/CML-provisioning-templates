@@ -1,0 +1,82 @@
+hostname IPSEC-R2
+!
+vrf definition management
+ !
+ address-family ipv4
+ exit-address-family
+!
+no logging console
+!
+no aaa new-model
+!
+ip domain name automation.lab
+!
+username netadmin privilege 15 password 0 samlab123
+!
+ip ssh version 2
+crypto key generate rsa modulus 2048
+!
+no crypto ikev2 proposal default
+!
+no crypto ikev2 policy default
+!
+no crypto ipsec profile default
+!
+no crypto ipsec transform-set default
+!
+crypto isakmp policy 10
+ encryption aes
+ authentication pre-share
+ group 14
+ lifetime 3600
+!
+crypto isakmp key cisco123 address 20.5.7.1 
+!
+crypto ipsec transform-set MYSET esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile MYPROFILE
+ set transform-set MYSET
+!
+interface Tunnel0
+ ip address 10.0.0.1 255.255.255.252
+ tunnel source GigabitEthernet1
+ tunnel mode ipsec ipv4
+ tunnel destination 20.5.7.1
+ tunnel protection ipsec profile MYPROFILE
+!
+ip route 10.50.3.0 255.255.255.248 Tunnel0
+!
+interface GigabitEthernet1
+ description to INET
+ ip address 20.5.7.1 255.255.255.252
+ negotiation auto
+ no shut
+!
+interface GigabitEthernet2
+ description to A2
+ ip address 10.50.3.1 255.255.255.248
+ negotiation auto
+ no shut
+!
+interface GigabitEthernet4
+ vrf forwarding management
+ ip address 192.168.0.152 255.255.255.0
+ negotiation auto
+ no shut
+!
+!
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet1
+ip route vrf management 0.0.0.0 0.0.0.0 192.168.0.1
+!
+!
+line con 0
+ exec-timeout 0 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ length 0
+ transport input ssh
+!
+end
