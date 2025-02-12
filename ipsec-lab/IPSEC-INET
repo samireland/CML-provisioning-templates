@@ -1,0 +1,56 @@
+hostname IPSEC-ISP
+!
+vrf definition management
+ !
+ address-family ipv4
+ exit-address-family
+!
+no logging console
+!
+no aaa new-model
+!
+ip domain name automation.lab
+!
+username netadmin privilege 15 password 0 samlab123
+!
+ip ssh version 2
+crypto key generate rsa modulus 2048
+!
+no crypto ikev2 proposal default
+!
+no crypto ikev2 policy default
+!
+no crypto ipsec profile default
+!
+no crypto ipsec transform-set default
+!
+!
+interface GigabitEthernet1
+ description to lab01
+ ip address 12.100.0.1 255.255.255.252
+ no shut
+!
+interface GigabitEthernet2
+ description to lab02
+ ip address 20.5.7.2 255.255.255.252
+ no shut
+!
+interface GigabitEthernet4
+ vrf forwarding management
+ ip address 192.168.0.150 255.255.255.0
+ negotiation auto
+ no shut
+!
+ip route vrf management 0.0.0.0 0.0.0.0 192.168.0.1
+!
+!
+line con 0
+ exec-timeout 0 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ length 0
+ transport input ssh
+!
+end

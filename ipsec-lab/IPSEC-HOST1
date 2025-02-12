@@ -1,0 +1,11 @@
+# set hostname
+hostname IPSEC-HOST1
+
+# set credentials
+USERNAME=admin
+PASSWORD=samlab123
+
+# configure networking
+ifconfig eth0 172.16.20.5 netmask 255.255.255.248 up
+# route add -net 10.0.0.0/8 dev eth1
+route add default via 172.16.20.1
