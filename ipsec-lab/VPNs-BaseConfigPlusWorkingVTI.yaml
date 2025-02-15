@@ -163,7 +163,7 @@ nodes:
            group 14
            lifetime 3600
           !
-          crypto isakmp key cisco123 address 12.100.0.2
+          crypto isakmp key cisco123 address 20.5.7.1
           !
           crypto ipsec transform-set MYSET esp-aes esp-sha-hmac
            mode tunnel
@@ -172,13 +172,11 @@ nodes:
            set transform-set MYSET
           !
           interface Tunnel0
-           ip address 10.0.0.2 255.255.255.252
+           ip unnumbered GigabitEthernet1
            tunnel source GigabitEthernet1
            tunnel mode ipsec ipv4
-           tunnel destination 12.100.0.2
+           tunnel destination 20.5.7.1
            tunnel protection ipsec profile MYPROFILE
-          !
-          ip route 10.50.3.0 255.255.255.248 Tunnel0
           !
           interface GigabitEthernet1
            description to INET
@@ -200,6 +198,7 @@ nodes:
           !
           !
           ip route 0.0.0.0 0.0.0.0 GigabitEthernet1
+          ip route 10.50.3.0 255.255.255.248 Tunnel0
           ip route vrf management 0.0.0.0 0.0.0.0 192.168.0.1
           !
           !
@@ -353,6 +352,7 @@ nodes:
     configuration:
       - name: iosxe_config.txt
         content: |-
+          !CSR1000v
           hostname IPSEC-R2
           !
           vrf definition management
@@ -379,6 +379,26 @@ nodes:
           !
           no crypto ipsec transform-set default
           !
+          crypto isakmp policy 10
+           encryption aes
+           authentication pre-share
+           group 14
+           lifetime 3600
+          !
+          crypto isakmp key cisco123 address 12.100.0.2
+          !
+          crypto ipsec transform-set MYSET esp-aes esp-sha-hmac
+           mode tunnel
+          !
+          crypto ipsec profile MYPROFILE
+           set transform-set MYSET
+          !
+          interface Tunnel0
+           ip unnumbered GigabitEthernet1
+           tunnel source GigabitEthernet1
+           tunnel mode ipsec ipv4
+           tunnel destination 12.100.0.2
+           tunnel protection ipsec profile MYPROFILE
           !
           interface GigabitEthernet1
            description to INET
@@ -400,6 +420,7 @@ nodes:
           !
           !
           ip route 0.0.0.0 0.0.0.0 GigabitEthernet1
+          ip route 172.16.20.0 255.255.255.248 Tunnel0
           ip route vrf management 0.0.0.0 0.0.0.0 192.168.0.1
           !
           !
