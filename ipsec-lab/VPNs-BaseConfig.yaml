@@ -5,6 +5,7 @@ annotations:
     rotation: 0
     text_bold: false
     text_content: |-
+      CREDS: sam/cisco for all devices
       ------------------
       [IPSEC-R1]
       G1 | WAN | 12.100.0.2 | 12.100.0.0/30
