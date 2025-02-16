@@ -1,0 +1,19 @@
+#### set hostname
+hostname theHostname
+
+### set credentials
+USERNAME=sam
+PASSWORD=cisco
+
+
+
+### configure networking
+
+# set ip address on default interface
+ip addr add 10.0.0.2/29 dev eth0
+
+# enable that same interface
+ip link set dev eth0 up
+
+# add a default route to the gateway
+ip route add 0.0.0.0/0 via 10.0.0.1
