@@ -1,0 +1,1 @@
+These text files can be copied into the 'CONFIG' tab for Devices to have them configured automatically the first time they are started
